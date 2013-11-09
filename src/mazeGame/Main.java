@@ -67,8 +67,7 @@ public class Main implements ActionListener{
 		netMan = new NetManager();
 		MapStats.statsList = new LinkedList<MapStats>();
 		
-		logln("Starting");
-		logln("Note: New log entries are inserted at top of window, not bottom!");
+		log(">Starting");
 		
 		/* Setup timer stuffs */
 		frameRate = 20;
@@ -77,13 +76,11 @@ public class Main implements ActionListener{
 		t.start();
 	}
 	
-	public static void log(String msg){
-		logViewer.log(msg);
-	}
+	/* Logging methods */
+	public static void log(String msg){logViewer.log(msg);}
+	public static void logln(String msg){logViewer.logln(msg);}
+	public static void logAbridged(String msg){logViewer.logAbridged(msg);}
 	
-	public static void logln(String msg){
-		logViewer.logln(msg);
-	}
 	
 	public static void log(String[] msg){
 		String newMsg = "[";

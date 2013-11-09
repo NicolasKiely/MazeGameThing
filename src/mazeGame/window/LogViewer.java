@@ -4,12 +4,14 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 
 public class LogViewer extends JFrame{
 	private JPanel mainPanel;
 	private JTextArea logArea;
+	private JScrollPane scroll;
 	
 	public LogViewer(){
 		/* Setup frame */
@@ -25,18 +27,28 @@ public class LogViewer extends JFrame{
 		this.logArea.setBackground(new Color(0,0,0));
 		this.logArea.setEditable(false);
 		this.logArea.setForeground(new Color(200, 200, 200));
-		this.mainPanel.add(logArea);
+		this.scroll = new JScrollPane(this.logArea);
+		this.add(this.scroll);
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	
+	public void logAbridged(String msg){
+		if (msg.length() >= 130){
+			this.logArea.append("\n>" +msg.substring(0, 64)+ " ... " +msg.substring(msg.length()-64));
+		} else {
+			this.logln(msg);
+		}
+	}
+	
+	
 	public void logln(String msg){
-		this.logArea.setText(msg+ "\n" + this.logArea.getText());
+		this.logArea.append("\n>" + msg);
 	}
 	
 	public void log(String msg){
-		this.logArea.setText(msg+this.logArea.getText());
+		this.logArea.append(msg);
 	}
 	
 	

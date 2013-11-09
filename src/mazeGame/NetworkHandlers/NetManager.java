@@ -105,9 +105,9 @@ public class NetManager {
 				
 				state++;
 			}
-			//TODO: remove Debug print
+
 			if (table != null) {
-				Main.logln(table.toString());
+				Main.logAbridged(table.toString());
 				
 				/* Check handlers */
 				for (PacketHandler handler : this.handlers){
