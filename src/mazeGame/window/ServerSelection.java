@@ -114,9 +114,7 @@ public class ServerSelection extends JFrame implements ActionListener{
 				this.statusLbl.setText("   Failed to connect");
 			} else {
 				this.statusLbl.setText("          Connected!");
-				this.disable();
-				Main.mapManWin.enable();
-				Main.mainWin.enable();
+				Main.mainLobbySetup();
 			}
 		}
 	}

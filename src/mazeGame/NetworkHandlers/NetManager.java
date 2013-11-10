@@ -142,9 +142,7 @@ public class NetManager {
 		
 		this.sockWriter = null;
 		this.sockReader = null;
-		Main.serverSelection.enable();
-		Main.mapManWin.disable();
-		Main.mainWin.disable();
+		Main.serverLoginSetup();
 	}
 	
 	

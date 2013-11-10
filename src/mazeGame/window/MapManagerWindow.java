@@ -313,6 +313,7 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 				ServerDialog dummy = new ServerDialog(msg);
 				
 			} else {
+				Main.editMazeSetup();
 				//Main.sendServerCommand("/maze/play/deleteMap -id \"" +ms.id+ "\"");
 			}
 		}

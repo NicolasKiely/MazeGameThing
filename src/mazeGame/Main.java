@@ -20,19 +20,12 @@ package mazeGame;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.LinkedList;
 
-import javax.swing.JFrame;
 import javax.swing.Timer;
-
 import mazeGame.NetworkHandlers.NetManager;
 import mazeGame.map.MapStats;
+import mazeGame.window.EditorWindow;
 import mazeGame.window.LogViewer;
 import mazeGame.window.MainMenu;
 import mazeGame.window.MapManagerWindow;
@@ -46,6 +39,7 @@ public class Main implements ActionListener{
 	public static LogViewer logViewer;
 	public static MapManagerWindow mapManWin;
 	public static MainMenu mainWin;
+	public static EditorWindow editor;
 	
 	public static NetManager netMan;
 
@@ -58,10 +52,11 @@ public class Main implements ActionListener{
 	
 	public static void main(String[] args){
 		/* Set up windows */
-		logViewer = new LogViewer(); logViewer.enable();
+		logViewer = new LogViewer(); logViewer.enable();// logViewer.setState(JFrame.ICONIFIED);
 		serverSelection = new ServerSelection(); serverSelection.enable();
 		mapManWin = new MapManagerWindow(); mapManWin.disable();
 		mainWin = new MainMenu(); mainWin.disable();
+		editor = new EditorWindow(); editor.disable();
 		
 		/* Initialize managers */
 		netMan = new NetManager();
@@ -102,14 +97,41 @@ public class Main implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent event) {
 		this.loopCounter += 1;
-		if (this.loopCounter >= frameRate){this.loopCounter = 0;}
+		if (this.loopCounter >= Main.frameRate){this.loopCounter = 0;}
 		
-		this.netMan.readSocket();
+		Main.netMan.readSocket();
 	}
 	
 	
 	public static void sendServerCommand(String msg){
 		logln("& " + msg + ";");
-		netMan.sendCommand(msg);
+		Main.netMan.sendCommand(msg);
+	}
+	
+	
+	public static void serverLoginSetup(){
+		Main.logViewer.enable();
+		Main.serverSelection.enable();
+		Main.mapManWin.disable();
+		Main.mainWin.disable();
+		Main.editor.disable();
+	}
+	
+	
+	public static void mainLobbySetup(){
+		Main.logViewer.enable();
+		Main.serverSelection.disable();
+		Main.mapManWin.enable();
+		Main.mainWin.enable();
+		Main.editor.disable();
+	}
+	
+	
+	public static void editMazeSetup(){
+		Main.logViewer.enable();
+		Main.serverSelection.disable();
+		Main.mapManWin.disable();
+		Main.mainWin.enable();
+		Main.editor.enable();
 	}
 }
