@@ -41,7 +41,9 @@ public class Main implements ActionListener{
 	public static MainMenu mainWin;
 	public static EditorWindow editor;
 	
+	/* Resource managers */
 	public static NetManager netMan;
+	public static ImageManager imgMan;
 
 	/* Program frame rate */
 	public static int deltaT;
@@ -58,11 +60,13 @@ public class Main implements ActionListener{
 		mainWin = new MainMenu(); mainWin.disable();
 		editor = new EditorWindow(); editor.disable();
 		
+		log(">Starting");
+		
 		/* Initialize managers */
 		netMan = new NetManager();
+		imgMan = new ImageManager();
 		MapStats.statsList = new LinkedList<MapStats>();
 		
-		log(">Starting");
 		
 		/* Setup timer stuffs */
 		frameRate = 20;
