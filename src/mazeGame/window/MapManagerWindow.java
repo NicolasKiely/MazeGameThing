@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionListener;
 
 import mazeGame.Main;
 import mazeGame.map.MapStats;
+import mazeGame.map.Maze;
 
 
 /**
@@ -313,8 +314,13 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 				ServerDialog dummy = new ServerDialog(msg);
 				
 			} else {
+				/* Request data for maze to edit*/
+				Main.editor = new EditorWindow(ms.size);
 				Main.editMazeSetup();
-				//Main.sendServerCommand("/maze/play/deleteMap -id \"" +ms.id+ "\"");
+				Main.sendServerCommand("/maze/play/getMaze -id \"" +ms.id+ "\"");
+				
+				/* Reset own maze data in preparation for packet */
+				Maze.editorMaze = new Maze(ms);
 			}
 		}
 	}

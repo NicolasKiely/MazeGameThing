@@ -11,6 +11,7 @@ import java.util.List;
 
 import mazeGame.Main;
 import mazeGame.NetworkHandlers.packets.MapStatsUpdate;
+import mazeGame.NetworkHandlers.packets.MazeDataPacket;
 import mazeGame.NetworkHandlers.packets.ServerDialogUpdate;
 
 /** Manages the networking */
@@ -33,6 +34,7 @@ public class NetManager {
 		
 		this.registerHandler(new MapStatsUpdate());
 		this.registerHandler(new ServerDialogUpdate());
+		this.registerHandler(new MazeDataPacket());
 	}
 	
 	

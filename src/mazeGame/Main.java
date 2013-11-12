@@ -5,6 +5,8 @@ package mazeGame;
  *    [X] List Map stats
  *    [X] Create new map
  *    [.] Edit existing map
+ *      [ ] Fetch maze data packet
+ *      [.] Render top-down maze
  *    [X] Delete map
  *  [ ] Lobby chat
  *    [ ] Show chat
@@ -25,6 +27,7 @@ import java.util.LinkedList;
 import javax.swing.Timer;
 import mazeGame.NetworkHandlers.NetManager;
 import mazeGame.map.MapStats;
+import mazeGame.window.EditorPallet;
 import mazeGame.window.EditorWindow;
 import mazeGame.window.LogViewer;
 import mazeGame.window.MainMenu;
@@ -40,6 +43,7 @@ public class Main implements ActionListener{
 	public static MapManagerWindow mapManWin;
 	public static MainMenu mainWin;
 	public static EditorWindow editor;
+	public static EditorPallet pallet;
 	
 	/* Resource managers */
 	public static NetManager netMan;
@@ -53,18 +57,20 @@ public class Main implements ActionListener{
 	private long loopCounter;
 	
 	public static void main(String[] args){
+		imgMan = new ImageManager();
+		
 		/* Set up windows */
 		logViewer = new LogViewer(); logViewer.enable();// logViewer.setState(JFrame.ICONIFIED);
 		serverSelection = new ServerSelection(); serverSelection.enable();
 		mapManWin = new MapManagerWindow(); mapManWin.disable();
 		mainWin = new MainMenu(); mainWin.disable();
-		editor = new EditorWindow(); editor.disable();
+		editor = new EditorWindow(10); editor.disable();
+		pallet = new EditorPallet(); pallet.disable();
 		
 		log(">Starting");
 		
 		/* Initialize managers */
 		netMan = new NetManager();
-		imgMan = new ImageManager();
 		MapStats.statsList = new LinkedList<MapStats>();
 		
 		
@@ -119,6 +125,7 @@ public class Main implements ActionListener{
 		Main.mapManWin.disable();
 		Main.mainWin.disable();
 		Main.editor.disable();
+		Main.pallet.disable();
 	}
 	
 	
@@ -128,6 +135,7 @@ public class Main implements ActionListener{
 		Main.mapManWin.enable();
 		Main.mainWin.enable();
 		Main.editor.disable();
+		Main.pallet.disable();
 	}
 	
 	
@@ -137,5 +145,6 @@ public class Main implements ActionListener{
 		Main.mapManWin.disable();
 		Main.mainWin.enable();
 		Main.editor.enable();
+		Main.pallet.enable();
 	}
 }
