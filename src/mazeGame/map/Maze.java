@@ -54,4 +54,7 @@ public class Maze {
 		
 		this.buf[col + this.getSize()*row] = value;
 	}
+	
+	
+	public MapStats getStats(){return this.refStats;}
 }

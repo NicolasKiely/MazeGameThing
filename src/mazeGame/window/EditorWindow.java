@@ -52,10 +52,18 @@ public class EditorWindow extends JFrame implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		Maze edit = Maze.editorMaze;
+		
 		int row = (e.getY()/33);
 		int col = (e.getX()/33);
-		Maze.editorMaze.setTile(row, col, Main.pallet.getSelectedTile());
+		char tile = Main.pallet.getSelectedTile();
+		edit.setTile(row, col, tile);
 		this.rend.repaint();
+		
+		/* Send update to server */
+		String msg = "/maze/play/editMaze -id \"" +edit.getStats().id+ "\" ";
+		msg += " -row \"" +row+ "\" -column \"" +col+ "\" -value \"" +tile+"\"";		
+		Main.sendServerCommand(msg);
 	}
 
 
