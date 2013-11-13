@@ -1,15 +1,14 @@
 package mazeGame;
 
 /* TODO:
- *  [.] Map Manager
+ *  [X] Map Manager
  *    [X] List Map stats
  *    [X] Create new map
- *    [.] Edit existing map
- *      [ ] Fetch maze data packet
- *      [.] Render top-down maze
+ *    [x] Edit existing map
  *    [X] Delete map
- *  [ ] Lobby chat
+ *  [.] Lobby chat
  *    [ ] Show chat
+ *    [ ] Show leaderboard
  *    [ ] Send chat
  *  [ ] Game list
  *    [ ] List available rooms

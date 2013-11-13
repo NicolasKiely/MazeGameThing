@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import mazeGame.Main;
+import mazeGame.NetworkHandlers.packets.ChatUpdate;
 import mazeGame.NetworkHandlers.packets.MapStatsUpdate;
 import mazeGame.NetworkHandlers.packets.MazeDataPacket;
 import mazeGame.NetworkHandlers.packets.ServerDialogUpdate;
@@ -35,6 +36,7 @@ public class NetManager {
 		this.registerHandler(new MapStatsUpdate());
 		this.registerHandler(new ServerDialogUpdate());
 		this.registerHandler(new MazeDataPacket());
+		this.registerHandler(new ChatUpdate());
 	}
 	
 	
