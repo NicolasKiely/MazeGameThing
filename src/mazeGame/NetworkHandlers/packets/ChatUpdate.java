@@ -3,7 +3,6 @@ package mazeGame.NetworkHandlers.packets;
 import mazeGame.Main;
 import mazeGame.NetworkHandlers.NetTable;
 import mazeGame.NetworkHandlers.PacketHandler;
-import mazeGame.map.Maze;
 
 public class ChatUpdate implements PacketHandler{
 

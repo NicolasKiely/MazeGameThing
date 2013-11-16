@@ -19,6 +19,8 @@ import mazeGame.Main;
  *
  */
 public class ServerSelection extends JFrame implements ActionListener{
+	private static final long serialVersionUID = 7L;
+	
 	/* Panels */
 	private JPanel mainPanel;
 	private JPanel addrPanel;

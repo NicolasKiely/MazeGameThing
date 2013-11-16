@@ -1,7 +1,6 @@
 package mazeGame.window;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -9,11 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -34,6 +31,7 @@ import mazeGame.map.Maze;
  *
  */
 public class MapManagerWindow extends JFrame implements ActionListener, ListSelectionListener, FocusListener{
+	private static final long serialVersionUID = 3L;
 	public String[][] mapStats;
 	private MapStats selectedStats;
 	
@@ -60,12 +58,12 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 	private JButton swapBtn;
 	
 	/* Map selection */
-	private JList mapPrivateList;
+	private JList<String> mapPrivateList;
 	private JScrollPane mapPrivateScroll;
-	private DefaultListModel mapPrivateModel;
-	private JList mapPublicList;
+	private DefaultListModel<String> mapPrivateModel;
+	private JList<String> mapPublicList;
 	private JScrollPane mapPublicScroll;
-	private DefaultListModel mapPublicModel;
+	private DefaultListModel<String> mapPublicModel;
 	private JLabel privSelLbl;
 	private JLabel pubSelLbl;
 	
@@ -81,20 +79,16 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 	private JLabel winsPlaysLbl;
 	private JLabel stageLbl;
 	
-	private Color lightColor;
-	private Color darkColor;
+	public ServerDialog dummy;
 	
 	public MapManagerWindow(){
 		this.createMazeWin = new NewMazeWindow();
-		
-		lightColor = new Color(250, 250, 250);
-		darkColor = new Color(150, 150, 150);
 		
 		mapStats = null;
 		this.setSize(600, 440);
 		this.setLocation(300, 500);
 		this.setTitle("Map Manager");
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.mainPanel = new JPanel(new GridLayout(0, 2));
 		this.add(this.mainPanel);
 		
@@ -143,8 +137,8 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 		this.mapsPanel.add(this.privatePanel);
 		this.mapsPanel.add(this.publicPanel);
 		
-		this.mapPrivateModel = new DefaultListModel();
-		this.mapPrivateList = new JList(mapPrivateModel);
+		this.mapPrivateModel = new DefaultListModel<String>();
+		this.mapPrivateList = new JList<String>(mapPrivateModel);
 		this.mapPrivateList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.mapPrivateList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		this.mapPrivateList.setVisibleRowCount(-1);
@@ -159,8 +153,8 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 		this.mapPrivateList.setBackground(new Color(150, 150, 150));
 		this.privatePanel.add(this.mapPrivateScroll, BorderLayout.SOUTH);
 		
-		this.mapPublicModel = new DefaultListModel();
-		this.mapPublicList = new JList(mapPublicModel);
+		this.mapPublicModel = new DefaultListModel<String>();
+		this.mapPublicList = new JList<String>(mapPublicModel);
 		this.mapPublicList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.mapPublicList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		this.mapPublicList.setVisibleRowCount(-1);
@@ -274,7 +268,8 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 
 	@Override
 	public void valueChanged(ListSelectionEvent lsEvent) {
-		JList source = (JList) lsEvent.getSource();
+		@SuppressWarnings("unchecked")
+		JList<String> source = (JList<String>) lsEvent.getSource();
 		this.selectedStats = MapStats.getStatsByName((String) source.getSelectedValue());
 		this.setMapStats(this.selectedStats);
 	}
@@ -301,7 +296,7 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 			
 			if (ms.isStaged == 0){
 				String[] msg = {"Cannot delete map", "Players can only delete private maps"};
-				ServerDialog dummy = new ServerDialog(msg);
+				dummy = new ServerDialog(msg);
 			} else {
 				Main.sendServerCommand("/maze/play/deleteMap -id \"" +ms.id+ "\"");
 			}
@@ -311,7 +306,7 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 			
 			if (ms.isStaged == 0){
 				String[] msg = {"Cannot edit map", "Players can only edit private maps"};
-				ServerDialog dummy = new ServerDialog(msg);
+				dummy = new ServerDialog(msg);
 				
 			} else {
 				/* Request data for maze to edit*/
@@ -328,7 +323,8 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 
 	@Override
 	public void focusGained(FocusEvent focus) {
-		JList source = (JList) focus.getSource();
+		@SuppressWarnings("unchecked")
+		JList<String> source = (JList<String>) focus.getSource();
 		this.selectedStats = MapStats.getStatsByName((String) source.getSelectedValue());
 		this.setMapStats(this.selectedStats);
 		

@@ -14,6 +14,8 @@ import mazeGame.Main;
 
 
 public class EditorPallet extends JFrame implements ActionListener {
+	private static final long serialVersionUID = 9L;
+	
 	private JComboBox<String> tileBox;
 	private String[] tileTypes = {"passable", "impassable", "start", "finish", "trap"};
 	private char[] tileChars = {'p', 'i', 's', 'f', 't'};

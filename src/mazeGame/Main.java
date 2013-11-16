@@ -7,14 +7,18 @@ package mazeGame;
  *    [x] Edit existing map
  *    [X] Delete map
  *  [.] Lobby chat
- *    [ ] Show chat
+ *    [X] Show chat
  *    [ ] Show leaderboard
- *    [ ] Send chat
- *  [ ] Game list
- *    [ ] List available rooms
- *    [ ] Join room
+ *    [X] Send chat
+ *  [.] Game list
+ *    [.] List available rooms
+ *    [.] Join room
+ *    [*] Create game room
  *  [ ] Game play
  *    [ ] Render map
+ *    
+ *    Room string format
+ *    <game type>:[<players in room>/<max players>] <creator's name> game
  */
 
 
@@ -31,6 +35,7 @@ import mazeGame.window.EditorWindow;
 import mazeGame.window.LogViewer;
 import mazeGame.window.MainMenu;
 import mazeGame.window.MapManagerWindow;
+import mazeGame.window.NewGameWindow;
 import mazeGame.window.ServerSelection;
 
 
@@ -43,6 +48,7 @@ public class Main implements ActionListener{
 	public static MainMenu mainWin;
 	public static EditorWindow editor;
 	public static EditorPallet pallet;
+	public static NewGameWindow newGame;
 	
 	/* Resource managers */
 	public static NetManager netMan;
@@ -65,6 +71,7 @@ public class Main implements ActionListener{
 		mainWin = new MainMenu(); mainWin.disable();
 		editor = new EditorWindow(10); editor.disable();
 		pallet = new EditorPallet(); pallet.disable();
+		newGame = new NewGameWindow(); newGame.disable();
 		
 		log(">Starting");
 		
@@ -125,25 +132,28 @@ public class Main implements ActionListener{
 		Main.mainWin.disable();
 		Main.editor.disable();
 		Main.pallet.disable();
+		Main.newGame.disable();
 	}
 	
 	
 	public static void mainLobbySetup(){
 		Main.logViewer.enable();
 		Main.serverSelection.disable();
-		Main.mapManWin.enable();
+		//Main.mapManWin.enable();
 		Main.mainWin.enable();
 		Main.editor.disable();
 		Main.pallet.disable();
+		Main.newGame.disable();
 	}
 	
 	
 	public static void editMazeSetup(){
 		Main.logViewer.enable();
 		Main.serverSelection.disable();
-		Main.mapManWin.disable();
+		//Main.mapManWin.disable();
 		Main.mainWin.enable();
 		Main.editor.enable();
 		Main.pallet.enable();
+		Main.newGame.disable();
 	}
 }

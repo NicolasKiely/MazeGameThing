@@ -3,7 +3,6 @@ package mazeGame.NetworkHandlers.packets;
 import mazeGame.Main;
 import mazeGame.NetworkHandlers.NetTable;
 import mazeGame.NetworkHandlers.PacketHandler;
-import mazeGame.window.NewMazeWindow;
 import mazeGame.window.ServerDialog;
 
 public class ServerDialogUpdate implements PacketHandler{
@@ -23,6 +22,7 @@ public class ServerDialogUpdate implements PacketHandler{
 			return;
 		}
 		
+		@SuppressWarnings("unused")
 		ServerDialog newWin = new ServerDialog(packet.getRecord(0));
 	}
 }

@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 
 
 public class LogViewer extends JFrame{
+	private static final long serialVersionUID = 1L;
 	private JPanel mainPanel;
 	private JTextArea logArea;
 	private JScrollPane scroll;

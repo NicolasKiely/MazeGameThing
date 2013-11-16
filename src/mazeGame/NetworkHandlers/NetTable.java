@@ -1,6 +1,5 @@
 package mazeGame.NetworkHandlers;
 
-import mazeGame.Main;
 
 /**
  * Inbound server packet

@@ -8,6 +8,7 @@ import java.awt.Image;
 import mazeGame.Main;
 
 public class EditorRenderer extends Component{
+	private static final long serialVersionUID = 4L;
 	private int size;
 	
 	
