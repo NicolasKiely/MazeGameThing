@@ -1,11 +1,9 @@
 package mazeGame.window;
 
-import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import mazeGame.Main;
@@ -17,6 +15,8 @@ import mazeGame.map.Maze;
  * @author Nic
  */
 public class EditorWindow extends JFrame implements MouseListener{
+	private static final long serialVersionUID = 13L;
+	
 	private EditorRenderer rend;
 	private JScrollPane scroll;
 	

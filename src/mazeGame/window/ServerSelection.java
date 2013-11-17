@@ -39,6 +39,7 @@ public class ServerSelection extends JFrame implements ActionListener{
 	/* Connect*/
 	private JButton connectBtn;
 	private JLabel statusLbl;
+	private JButton loggerBtn;
 	
 	public ServerSelection(){
 		/* Setup frame */
@@ -78,7 +79,11 @@ public class ServerSelection extends JFrame implements ActionListener{
 		this.connectBtn.addActionListener(this);
 		
 		this.statusLbl = new JLabel("       Not connected");
-		this.connectPanel.add(this.statusLbl, BorderLayout.EAST);
+		this.connectPanel.add(this.statusLbl, BorderLayout.CENTER);
+		this.loggerBtn = new JButton("Show logs");
+		this.loggerBtn.setActionCommand("logger");
+		this.loggerBtn.addActionListener(this);
+		this.connectPanel.add(this.loggerBtn, BorderLayout.EAST);
 		
 		/* Set up user/password fields */
 		this.userNameFld = new JTextField(24);
@@ -117,6 +122,13 @@ public class ServerSelection extends JFrame implements ActionListener{
 			} else {
 				this.statusLbl.setText("          Connected!");
 				Main.mainLobbySetup();
+			}
+			
+		} else if (e.getActionCommand().equals("logger")){
+			if (Main.logViewer.isVisible()){
+				Main.logViewer.disable();
+			} else {
+				Main.logViewer.enable();
 			}
 		}
 	}

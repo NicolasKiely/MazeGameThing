@@ -31,7 +31,7 @@ public class LogViewer extends JFrame{
 		this.scroll = new JScrollPane(this.logArea);
 		this.add(this.scroll);
 
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	

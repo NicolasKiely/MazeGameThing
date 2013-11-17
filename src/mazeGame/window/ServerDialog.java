@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ServerDialog extends JFrame {
+	private static final long serialVersionUID = 11L;
+	
 	private JLabel lbl1;
 	private JLabel lbl2;
 	

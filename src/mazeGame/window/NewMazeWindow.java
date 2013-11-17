@@ -13,8 +13,9 @@ import javax.swing.JTextField;
 import mazeGame.Main;
 
 public class NewMazeWindow extends JFrame implements ActionListener{
+	private static final long serialVersionUID = 12L;
+	
 	/* Panels */
-	private JPanel mainPanel;
 	private JPanel upperPanel;
 	private JPanel lowerPanel;
 	

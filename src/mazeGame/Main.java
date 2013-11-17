@@ -11,9 +11,10 @@ package mazeGame;
  *    [ ] Show leaderboard
  *    [X] Send chat
  *  [.] Game list
- *    [.] List available rooms
+ *    [X] List available rooms
  *    [.] Join room
- *    [*] Create game room
+ *    [X] Create game room
+ *    [*] Show waiting room
  *  [ ] Game play
  *    [ ] Render map
  *    
@@ -29,6 +30,7 @@ import java.util.LinkedList;
 
 import javax.swing.Timer;
 import mazeGame.NetworkHandlers.NetManager;
+import mazeGame.map.GameRoom;
 import mazeGame.map.MapStats;
 import mazeGame.window.EditorPallet;
 import mazeGame.window.EditorWindow;
@@ -37,6 +39,7 @@ import mazeGame.window.MainMenu;
 import mazeGame.window.MapManagerWindow;
 import mazeGame.window.NewGameWindow;
 import mazeGame.window.ServerSelection;
+import mazeGame.window.WaitingRoomWindow;
 
 
 
@@ -49,6 +52,7 @@ public class Main implements ActionListener{
 	public static EditorWindow editor;
 	public static EditorPallet pallet;
 	public static NewGameWindow newGame;
+	public static WaitingRoomWindow waitRoom;
 	
 	/* Resource managers */
 	public static NetManager netMan;
@@ -60,24 +64,28 @@ public class Main implements ActionListener{
 	
 	/** Timer loop counter */
 	private long loopCounter;
+	/** 5 second loop counter */
+	private long slowLoopCounter;
 	
 	public static void main(String[] args){
 		imgMan = new ImageManager();
 		
 		/* Set up windows */
-		logViewer = new LogViewer(); logViewer.enable();// logViewer.setState(JFrame.ICONIFIED);
+		logViewer = new LogViewer(); logViewer.disable();
 		serverSelection = new ServerSelection(); serverSelection.enable();
 		mapManWin = new MapManagerWindow(); mapManWin.disable();
 		mainWin = new MainMenu(); mainWin.disable();
 		editor = new EditorWindow(10); editor.disable();
 		pallet = new EditorPallet(); pallet.disable();
 		newGame = new NewGameWindow(); newGame.disable();
+		waitRoom = new WaitingRoomWindow(); waitRoom.disable();
 		
 		log(">Starting");
 		
 		/* Initialize managers */
 		netMan = new NetManager();
 		MapStats.statsList = new LinkedList<MapStats>();
+		GameRoom.roomList = new LinkedList<GameRoom>();
 		
 		
 		/* Setup timer stuffs */
@@ -113,9 +121,33 @@ public class Main implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent event) {
 		this.loopCounter += 1;
-		if (this.loopCounter >= Main.frameRate){this.loopCounter = 0;}
+		if (this.loopCounter >= Main.frameRate){
+			/* 1-Second ticker */
+			this.loopCounter = 0;
+			this.slowLoopCounter += 1;
+			if (this.slowLoopCounter >= 5){
+				/* 5-Second ticker */
+				this.slowLoopCounter = 0;
+				this.fiveSecondEvent();
+			}
+			
+			this.oneSecondEvent();
+		}
 		
 		Main.netMan.readSocket();
+	}
+	
+	
+	/** Called every second */
+	public void oneSecondEvent(){
+		/* Keep up to date with game rooms */
+		if (Main.mainWin.isVisible()){
+			Main.sendServerCommand("/maze/play/fetchRooms");
+		}
+	}
+	
+	/** Called every five seconds */
+	public void fiveSecondEvent(){
 	}
 	
 	
@@ -126,34 +158,32 @@ public class Main implements ActionListener{
 	
 	
 	public static void serverLoginSetup(){
-		Main.logViewer.enable();
 		Main.serverSelection.enable();
 		Main.mapManWin.disable();
 		Main.mainWin.disable();
 		Main.editor.disable();
 		Main.pallet.disable();
 		Main.newGame.disable();
+		Main.waitRoom.disable();
 	}
 	
 	
 	public static void mainLobbySetup(){
-		Main.logViewer.enable();
 		Main.serverSelection.disable();
-		//Main.mapManWin.enable();
 		Main.mainWin.enable();
 		Main.editor.disable();
 		Main.pallet.disable();
 		Main.newGame.disable();
+		Main.waitRoom.disable();
 	}
 	
 	
 	public static void editMazeSetup(){
-		Main.logViewer.enable();
 		Main.serverSelection.disable();
-		//Main.mapManWin.disable();
 		Main.mainWin.enable();
 		Main.editor.enable();
 		Main.pallet.enable();
 		Main.newGame.disable();
+		Main.waitRoom.disable();
 	}
 }

@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import mazeGame.Main;
+import mazeGame.map.GameRoom;
 
 
 /**
@@ -149,6 +150,7 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 	
 	
 	public void enable(){
+		Main.sendServerCommand("/maze/play/fetchRooms");
 		this.setVisible(true);
 	}
 	
@@ -196,5 +198,26 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 		if (e.getKeyChar() == '\n'){
 			this.sendChat();
 		}
+	}
+	
+	
+	/** Refetch data from list */
+	public void resetRoomList(){
+		/* Get name of current selected room */
+		int iRoom = this.roomList.getSelectedIndex();
+		String roomName = "";
+		if (iRoom >= 0 && !GameRoom.roomList.isEmpty()){
+			roomName = GameRoom.roomList.get(iRoom).getCreator();
+		}
+		
+		/* Reset */
+		this.roomListModel.removeAllElements();
+		for (GameRoom room : GameRoom.roomList){
+			this.roomListModel.addElement(room.toString());
+		}
+		this.repaint();
+		
+		/* Reselect */
+		if (iRoom >= 0) this.roomList.setSelectedIndex(GameRoom.getIndexByHost(roomName));
 	}
 }

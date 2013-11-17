@@ -13,6 +13,7 @@ import mazeGame.Main;
 import mazeGame.NetworkHandlers.packets.ChatUpdate;
 import mazeGame.NetworkHandlers.packets.MapStatsUpdate;
 import mazeGame.NetworkHandlers.packets.MazeDataPacket;
+import mazeGame.NetworkHandlers.packets.RoomListUpdate;
 import mazeGame.NetworkHandlers.packets.ServerDialogUpdate;
 
 /** Manages the networking */
@@ -37,6 +38,7 @@ public class NetManager {
 		this.registerHandler(new ServerDialogUpdate());
 		this.registerHandler(new MazeDataPacket());
 		this.registerHandler(new ChatUpdate());
+		this.registerHandler(new RoomListUpdate());
 	}
 	
 	
@@ -65,7 +67,7 @@ public class NetManager {
 					+ "\" -password \"" + Main.serverSelection.getPassword() + "\";");
 		
 			/* Try to load map stats */
-			this.sockWriter.println("JAVA|/maze/play/mapStats;");
+			this.sockWriter.print("JAVA|/maze/play/mapStats;");
 		
 			this.sockWriter.flush();
 		} catch (UnknownHostException e) {
