@@ -69,8 +69,7 @@ public class NewMazeWindow extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("ok")){
-			Main.sendServerCommand("/maze/play/newMap -size \"" +this.sizeFld.getText()+
-					"\" -name \"" +this.nameFld.getText()+"\"", true);
+			Main.srvCreateMaze(this.sizeFld.getText(), this.nameFld.getText());
 			
 			this.disable();
 		}

@@ -136,7 +136,7 @@ public class Main implements ActionListener{
 	public void oneSecondEvent(){
 		/* Keep up to date with game rooms */
 		if (MainMenu.get().isVisible()){
-			Main.sendServerCommand("/maze/room/fetch", false);
+			Main.srvFetchGameRooms(false);
 		}
 	}
 	
@@ -145,7 +145,7 @@ public class Main implements ActionListener{
 	}
 	
 	
-	public static void sendServerCommand(String msg, boolean doLog){
+	private static void sendServerCommand(String msg, boolean doLog){
 		if (doLog) logln("& " + msg + ";");
 		Main.netMan.sendCommand(msg);
 	}
@@ -179,5 +179,37 @@ public class Main implements ActionListener{
 		EditorPallet.get().enable();
 		Main.newGame.disable();
 		Main.waitRoom.disable();
+	}
+	
+	
+	/* Server commands */
+	public static void srvFetchGameRooms(boolean flag){
+		Main.sendServerCommand("/maze/room/fetch", flag);
+	}
+	public static void srvEditMaze(int id, int row, int col, char tile){
+		String msg = "/maze/play/editMaze -id \"" +id+ "\" ";
+		msg += " -row \"" +row+ "\" -column \"" +col+ "\" -value \"" +tile+"\"";		
+		Main.sendServerCommand(msg, true);
+	}
+	public static void srvSendChatMessage(String msgText){
+		Main.sendServerCommand("/chat/msg -message \"" +msgText+ "\" -room \"lobby\"", true);
+	}
+	public static void srvSwapMazeStage(int id){
+		Main.sendServerCommand("/maze/play/swapStage -id \"" +id+ "\"", true);
+	}
+	public static void srvDeleteMaze(int id){
+		Main.sendServerCommand("/maze/play/deleteMap -id \"" +id+ "\"", true);
+	}
+	public static void srvGetMaze(int id){
+		Main.sendServerCommand("/maze/play/getMaze -id \"" +id+ "\"", true);
+	}
+	public static void srvCreateRoom(String type, String size){
+		String pars = "-type \"" + type + "\" -players \"2\" ";
+		pars += "-size \"" + size + "\"";
+		Main.sendServerCommand("/maze/room/create "+pars, true);
+	}
+	public static void srvCreateMaze(String size, String name){
+		Main.sendServerCommand("/maze/play/newMap -size \"" +size+
+				"\" -name \"" +name+"\"", true);
 	}
 }

@@ -73,9 +73,7 @@ public class EditorWindow extends JFrame implements MouseListener{
 		this.rend.repaint();
 		
 		/* Send update to server */
-		String msg = "/maze/play/editMaze -id \"" +edit.getStats().id+ "\" ";
-		msg += " -row \"" +row+ "\" -column \"" +col+ "\" -value \"" +tile+"\"";		
-		Main.sendServerCommand(msg, true);
+		Main.srvEditMaze(edit.getStats().id, row, col, tile);
 	}
 
 

@@ -173,7 +173,6 @@ public class NetTable {
 				return i;
 			}
 		}
-		
 		return -1;
 	}
 }

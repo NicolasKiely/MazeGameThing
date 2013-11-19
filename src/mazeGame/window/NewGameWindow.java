@@ -105,11 +105,7 @@ public class NewGameWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("create")){
 			String mazeSize = (String) this.sizeBox.getSelectedItem();
-			
-			String pars = "-type \"" + (String) this.typeBox.getSelectedItem() + "\" ";
-			pars += "-players \"2\" ";
-			pars += "-size \"" + mazeSize.substring(0, 2) + "\"";
-			Main.sendServerCommand("/maze/room/create "+pars, true);
+			Main.srvCreateRoom((String) this.typeBox.getSelectedItem(), mazeSize.substring(0, 2));
 			
 			this.disable();
 			

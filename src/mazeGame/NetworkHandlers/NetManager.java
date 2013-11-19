@@ -132,7 +132,6 @@ public class NetManager {
 	public void processTablePacket(NetTable inputTable){
 		if (inputTable == null) return;
 		boolean packetWasHandled = false;
-		String whoHandled = "";
 		
 		/* Run against packet handlers */
 		for (PacketHandler handler : this.handlers){
@@ -140,18 +139,11 @@ public class NetManager {
 				/* Fire off matching handlers */
 				handler.onPacketMatch(inputTable);
 				packetWasHandled = true;
-				whoHandled = handler.getMatcherString();
 			}
 		}
-		
-		Main.logln(inputTable.toString());
+	
 		/* Debugging stuff */
-		/*if (!packetWasHandled){
-			Main.logAbridged(table.toString());
-		} else {
-			if (!whoHandled.equals("MAZELIST")) Main.logln("Packet handled by: "+whoHandled);
-		}*/
-		
+		if (!packetWasHandled && !inputTable.getColumns()[0].equals("ACK")) Main.logAbridged(inputTable.toString());
 	}
 	
 	

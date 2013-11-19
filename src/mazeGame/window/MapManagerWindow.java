@@ -298,7 +298,7 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 			
 		} else if (e.getActionCommand().equals("swap")){
 			if (ms == null) return;
-			Main.sendServerCommand("/maze/play/swapStage -id \"" +ms.id+ "\"", true);
+			Main.srvSwapMazeStage(ms.id);
 			
 		} else if (e.getActionCommand().equals("delete")) {
 			if (ms == null) return;
@@ -307,7 +307,7 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 				String[] msg = {"Cannot delete map", "Players can only delete private maps"};
 				dummy = new ServerDialog(msg);
 			} else {
-				Main.sendServerCommand("/maze/play/deleteMap -id \"" +ms.id+ "\"", true);
+				Main.srvDeleteMaze(ms.id);
 			}
 			
 		} else if (e.getActionCommand().equals("edit")){
@@ -321,7 +321,7 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 				/* Request data for maze to edit*/
 				EditorWindow.reset(ms.size);
 				Main.editMazeSetup();
-				Main.sendServerCommand("/maze/play/getMaze -id \"" +ms.id+ "\"", true);
+				Main.srvGetMaze(ms.id);
 				
 				/* Reset own maze data in preparation for packet */
 				Maze.editorMaze = new Maze(ms);

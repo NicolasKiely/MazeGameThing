@@ -159,7 +159,7 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 	
 	
 	public void enable(){
-		Main.sendServerCommand("/maze/room/fetch", true);
+		Main.srvFetchGameRooms(true);
 		this.setVisible(true);
 	}
 	
@@ -187,9 +187,7 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 	/** Sends chat message */
 	public void sendChat(){
 		String msgText = this.chatFld.getText().replace("\"", "`").replace("'", "`");
-		if (!msgText.equals("")){
-			Main.sendServerCommand("/chat/msg -message \"" +msgText+ "\" -room \"lobby\"", true);
-		}
+		if (!msgText.equals(""))Main.srvSendChatMessage(msgText);
 		
 		this.chatFld.setText("");
 	}
