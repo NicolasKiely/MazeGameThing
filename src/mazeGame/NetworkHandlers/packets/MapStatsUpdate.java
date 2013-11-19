@@ -4,6 +4,7 @@ import mazeGame.Main;
 import mazeGame.NetworkHandlers.NetTable;
 import mazeGame.NetworkHandlers.PacketHandler;
 import mazeGame.map.MapStats;
+import mazeGame.window.MapManagerWindow;
 
 /**
  * Handles MapStats packet
@@ -51,9 +52,9 @@ public class MapStatsUpdate implements PacketHandler{
 		}
 		
 		/* Refresh map names */
-		Main.mapManWin.resetMapNames();
+		MapManagerWindow.get().resetMapNames();
 		
-		Main.mapManWin.resetListSelection();
+		MapManagerWindow.get().resetListSelection();
 	}
 
 }

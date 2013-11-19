@@ -45,12 +45,6 @@ import mazeGame.window.WaitingRoomWindow;
 
 public class Main implements ActionListener{
 	/* Windowing things */
-	public static ServerSelection serverSelection;
-	public static LogViewer logViewer;
-	public static MapManagerWindow mapManWin;
-	public static MainMenu mainWin;
-	public static EditorWindow editor;
-	public static EditorPallet pallet;
 	public static NewGameWindow newGame;
 	public static WaitingRoomWindow waitRoom;
 	
@@ -62,21 +56,21 @@ public class Main implements ActionListener{
 	public static int deltaT;
 	public static int frameRate;
 	
-	/** Timer loop counter */
+	/** Timer loop counters */
 	private long loopCounter;
-	/** 5 second loop counter */
 	private long slowLoopCounter;
+	
 	
 	public static void main(String[] args){
 		imgMan = new ImageManager();
 		
 		/* Set up windows */
-		logViewer = new LogViewer(); logViewer.disable();
-		serverSelection = new ServerSelection(); serverSelection.enable();
-		mapManWin = new MapManagerWindow(); mapManWin.disable();
-		mainWin = new MainMenu(); mainWin.disable();
-		editor = new EditorWindow(10); editor.disable();
-		pallet = new EditorPallet(); pallet.disable();
+		LogViewer.get().disable();
+		ServerSelection.get().enable();
+		MapManagerWindow.get().disable();
+		MainMenu.get().disable();
+		EditorWindow.reset(10); EditorWindow.get().disable();
+		EditorPallet.get().disable();
 		newGame = new NewGameWindow(); newGame.disable();
 		waitRoom = new WaitingRoomWindow(); waitRoom.disable();
 		
@@ -96,9 +90,9 @@ public class Main implements ActionListener{
 	}
 	
 	/* Logging methods */
-	public static void log(String msg){logViewer.log(msg);}
-	public static void logln(String msg){logViewer.logln(msg);}
-	public static void logAbridged(String msg){logViewer.logAbridged(msg);}
+	public static void log(String msg){LogViewer.get().log(msg);}
+	public static void logln(String msg){LogViewer.get().logln(msg);}
+	public static void logAbridged(String msg){LogViewer.get().logAbridged(msg);}
 	
 	
 	public static void log(String[] msg){
@@ -141,8 +135,8 @@ public class Main implements ActionListener{
 	/** Called every second */
 	public void oneSecondEvent(){
 		/* Keep up to date with game rooms */
-		if (Main.mainWin.isVisible()){
-			Main.sendServerCommand("/maze/play/fetchRooms");
+		if (MainMenu.get().isVisible()){
+			Main.sendServerCommand("/maze/room/fetch", false);
 		}
 	}
 	
@@ -151,38 +145,38 @@ public class Main implements ActionListener{
 	}
 	
 	
-	public static void sendServerCommand(String msg){
-		logln("& " + msg + ";");
+	public static void sendServerCommand(String msg, boolean doLog){
+		if (doLog) logln("& " + msg + ";");
 		Main.netMan.sendCommand(msg);
 	}
 	
 	
 	public static void serverLoginSetup(){
-		Main.serverSelection.enable();
-		Main.mapManWin.disable();
-		Main.mainWin.disable();
-		Main.editor.disable();
-		Main.pallet.disable();
+		ServerSelection.get().enable();
+		MapManagerWindow.get().disable();
+		MainMenu.get().disable();
+		EditorWindow.get().disable();
+		EditorPallet.get().disable();
 		Main.newGame.disable();
 		Main.waitRoom.disable();
 	}
 	
 	
 	public static void mainLobbySetup(){
-		Main.serverSelection.disable();
-		Main.mainWin.enable();
-		Main.editor.disable();
-		Main.pallet.disable();
+		ServerSelection.get().disable();
+		MainMenu.get().enable();
+		EditorWindow.get().disable();
+		EditorPallet.get().disable();
 		Main.newGame.disable();
 		Main.waitRoom.disable();
 	}
 	
 	
 	public static void editMazeSetup(){
-		Main.serverSelection.disable();
-		Main.mainWin.enable();
-		Main.editor.enable();
-		Main.pallet.enable();
+		ServerSelection.get().disable();
+		MainMenu.get().enable();
+		EditorWindow.get().enable();
+		EditorPallet.get().enable();
 		Main.newGame.disable();
 		Main.waitRoom.disable();
 	}

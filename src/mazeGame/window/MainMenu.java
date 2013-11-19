@@ -30,6 +30,7 @@ import mazeGame.map.GameRoom;
  */
 public class MainMenu extends JFrame implements ActionListener, KeyListener{
 	private static final long serialVersionUID = 2L;
+	private static MainMenu instance;
 
 	private JPanel mainPanel;
 	
@@ -57,7 +58,15 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 	private JScrollPane roomListScroll;
 	private DefaultListModel<String> roomListModel;
 	
-	public MainMenu(){
+	
+	public static MainMenu get(){
+		if (MainMenu.instance == null)
+			MainMenu.instance = new MainMenu();
+		return MainMenu.instance;
+	}
+	
+	
+	private MainMenu(){
 		this.setSize(600, 440);
 		this.setLocation(100, 100);
 		this.setTitle("Main Screen");
@@ -150,7 +159,7 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 	
 	
 	public void enable(){
-		Main.sendServerCommand("/maze/play/fetchRooms");
+		Main.sendServerCommand("/maze/room/fetch", true);
 		this.setVisible(true);
 	}
 	
@@ -168,7 +177,7 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 		} else if (act.equals("chatEnter")){
 			this.sendChat();
 		} else if (act.equals("manager")){
-			Main.mapManWin.enable();
+			MapManagerWindow.get().enable();
 		} else if (act.equals("create")){
 			Main.newGame.enable();
 		}
@@ -179,7 +188,7 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 	public void sendChat(){
 		String msgText = this.chatFld.getText().replace("\"", "`").replace("'", "`");
 		if (!msgText.equals("")){
-			Main.sendServerCommand("/chat/msg -message \"" +msgText+ "\" -room \"lobby\"");
+			Main.sendServerCommand("/chat/msg -message \"" +msgText+ "\" -room \"lobby\"", true);
 		}
 		
 		this.chatFld.setText("");

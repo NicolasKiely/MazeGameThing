@@ -70,7 +70,7 @@ public class NewMazeWindow extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("ok")){
 			Main.sendServerCommand("/maze/play/newMap -size \"" +this.sizeFld.getText()+
-					"\" -name \"" +this.nameFld.getText()+"\"");
+					"\" -name \"" +this.nameFld.getText()+"\"", true);
 			
 			this.disable();
 		}

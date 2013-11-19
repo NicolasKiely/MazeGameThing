@@ -15,6 +15,7 @@ import mazeGame.NetworkHandlers.packets.MapStatsUpdate;
 import mazeGame.NetworkHandlers.packets.MazeDataPacket;
 import mazeGame.NetworkHandlers.packets.RoomListUpdate;
 import mazeGame.NetworkHandlers.packets.ServerDialogUpdate;
+import mazeGame.window.ServerSelection;
 
 /** Manages the networking */
 public class NetManager {
@@ -24,6 +25,8 @@ public class NetManager {
 	private BufferedReader sockReader;
 	
 	private List<PacketHandler> handlers;
+	private int state;
+	private NetTable table;
 	
 	/**
 	 * Initializes stuff
@@ -34,6 +37,8 @@ public class NetManager {
 		sockReader = null;
 		handlers = new LinkedList<PacketHandler>();
 		
+		this.state = 0;
+		this.table = null;
 		this.registerHandler(new MapStatsUpdate());
 		this.registerHandler(new ServerDialogUpdate());
 		this.registerHandler(new MazeDataPacket());
@@ -63,8 +68,8 @@ public class NetManager {
 			this.sockReader = new BufferedReader(new InputStreamReader(servSock.getInputStream()));
 		
 			/* Try to login */
-			this.sockWriter.print("JAVA|/acc/log/login -account \""+Main.serverSelection.getUserName()
-					+ "\" -password \"" + Main.serverSelection.getPassword() + "\";");
+			this.sockWriter.print("JAVA|/acc/log/login -account \""+ServerSelection.get().getUserName()
+					+ "\" -password \"" + ServerSelection.get().getPassword() + "\";");
 		
 			/* Try to load map stats */
 			this.sockWriter.print("JAVA|/maze/play/mapStats;");
@@ -89,14 +94,16 @@ public class NetManager {
 	public void readSocket(){
 		/* Read socket */
 		try {
-			int state = 0;
-			NetTable table = null;
+			//state = 0;
+			//NetTable table = null;
 			
 			while (sockReader != null && sockReader.ready()){
 				if (table == null){table = new NetTable();}
 				
 				String s = sockReader.readLine();
 				String[] fields = s.split("\t");
+				if (s == null || fields == null || s.equals("")) return;
+				
 				
 				if (state == 0){
 					table.setHeader(fields);
@@ -107,28 +114,44 @@ public class NetManager {
 				} else {
 					table.setRecords(fields, table.getColumns().length);
 					state = -1;
+					
+					this.processTablePacket(table);
+					table = null;
 				}
 				
 				state++;
 			}
-
-			if (table != null) {
-				Main.logAbridged(table.toString());
-				
-				/* Check handlers */
-				for (PacketHandler handler : this.handlers){
-					if (table.hasHeaderValue(handler.getMatcherString())){
-						/* Fire off matching handlers */
-						handler.onPacketMatch(table);
-					}
-				}
-			}
-			
-			
 			
 		} catch (IOException e) {
 			Main.logln("Main loop socket read: " + e.getMessage());
 		}
+	}
+	
+	
+	/** Processes table packet */
+	public void processTablePacket(NetTable inputTable){
+		if (inputTable == null) return;
+		boolean packetWasHandled = false;
+		String whoHandled = "";
+		
+		/* Run against packet handlers */
+		for (PacketHandler handler : this.handlers){
+			if (inputTable.hasHeaderValue(handler.getMatcherString())){
+				/* Fire off matching handlers */
+				handler.onPacketMatch(inputTable);
+				packetWasHandled = true;
+				whoHandled = handler.getMatcherString();
+			}
+		}
+		
+		Main.logln(inputTable.toString());
+		/* Debugging stuff */
+		/*if (!packetWasHandled){
+			Main.logAbridged(table.toString());
+		} else {
+			if (!whoHandled.equals("MAZELIST")) Main.logln("Packet handled by: "+whoHandled);
+		}*/
+		
 	}
 	
 	

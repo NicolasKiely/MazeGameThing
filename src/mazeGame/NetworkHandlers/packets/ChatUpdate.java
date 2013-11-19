@@ -1,8 +1,8 @@
 package mazeGame.NetworkHandlers.packets;
 
-import mazeGame.Main;
 import mazeGame.NetworkHandlers.NetTable;
 import mazeGame.NetworkHandlers.PacketHandler;
+import mazeGame.window.MainMenu;
 
 public class ChatUpdate implements PacketHandler{
 
@@ -20,7 +20,7 @@ public class ChatUpdate implements PacketHandler{
 		for (int r = 0; r < packet.getNumberOfRecords(); r++){
 			String[] record = packet.getRecord(r);
 			
-			Main.mainWin.logChat(record[authorIndex], record[msgIndex]);
+			MainMenu.get().logChat(record[authorIndex], record[msgIndex]);
 			
 			/* Update render */
 			//if (Main.editor.isEnabled()){Main.editor.repaint();}

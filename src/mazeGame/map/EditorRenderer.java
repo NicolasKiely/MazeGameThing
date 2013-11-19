@@ -21,6 +21,7 @@ public class EditorRenderer extends Component{
     }
 	
 	public void paint(Graphics g){
+		//g.clearRect(0, 0, size*33, size*33);
 		Maze maze = Maze.editorMaze;
 		
 		for (int r = 0; r < maze.getSize(); r++){

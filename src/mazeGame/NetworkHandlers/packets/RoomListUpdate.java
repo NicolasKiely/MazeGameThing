@@ -4,6 +4,7 @@ import mazeGame.Main;
 import mazeGame.NetworkHandlers.NetTable;
 import mazeGame.NetworkHandlers.PacketHandler;
 import mazeGame.map.GameRoom;
+import mazeGame.window.MainMenu;
 
 public class RoomListUpdate implements PacketHandler{
 
@@ -47,7 +48,7 @@ public class RoomListUpdate implements PacketHandler{
 			GameRoom.roomList.add(newRoom);
 		}
 		
-		Main.mainWin.resetRoomList();
+		MainMenu.get().resetRoomList();
 	}
 
 }

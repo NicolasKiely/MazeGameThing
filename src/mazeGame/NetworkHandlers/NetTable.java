@@ -62,6 +62,9 @@ public class NetTable {
 	 * @param colNum
 	 */
 	public void setRecords(String[] newRecords, int colNum){
+		if (newRecords == null) return;
+		if (newRecords[0] == null) return;
+		
 		int recordLine = 0;
 		int field = 0;
 		if (colNum == 0){colNum=1;}

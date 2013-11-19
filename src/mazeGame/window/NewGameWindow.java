@@ -109,7 +109,7 @@ public class NewGameWindow extends JFrame implements ActionListener {
 			String pars = "-type \"" + (String) this.typeBox.getSelectedItem() + "\" ";
 			pars += "-players \"2\" ";
 			pars += "-size \"" + mazeSize.substring(0, 2) + "\"";
-			Main.sendServerCommand("/maze/play/createGame "+pars);
+			Main.sendServerCommand("/maze/room/create "+pars, true);
 			
 			this.disable();
 			

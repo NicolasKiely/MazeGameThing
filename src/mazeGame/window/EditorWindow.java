@@ -16,11 +16,23 @@ import mazeGame.map.Maze;
  */
 public class EditorWindow extends JFrame implements MouseListener{
 	private static final long serialVersionUID = 13L;
+	private static EditorWindow instance;
 	
 	private EditorRenderer rend;
 	private JScrollPane scroll;
 	
-	public EditorWindow(int nSize){
+	
+	public static EditorWindow get(){
+		return EditorWindow.instance;
+	}
+	
+	
+	public static void reset(int nSize){
+		EditorWindow.instance = new EditorWindow(nSize);
+	}
+	
+	
+	private EditorWindow(int nSize){
 		this.setSize(640, 480);
 		this.setLocation(300, 500);
 		this.setTitle("Maze Editor");
@@ -56,14 +68,14 @@ public class EditorWindow extends JFrame implements MouseListener{
 		
 		int row = (e.getY()/33);
 		int col = (e.getX()/33);
-		char tile = Main.pallet.getSelectedTile();
+		char tile = EditorPallet.get().getSelectedTile();
 		edit.setTile(row, col, tile);
 		this.rend.repaint();
 		
 		/* Send update to server */
 		String msg = "/maze/play/editMaze -id \"" +edit.getStats().id+ "\" ";
 		msg += " -row \"" +row+ "\" -column \"" +col+ "\" -value \"" +tile+"\"";		
-		Main.sendServerCommand(msg);
+		Main.sendServerCommand(msg, true);
 	}
 
 

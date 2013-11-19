@@ -26,7 +26,7 @@ public class Maze {
 		/* initialize */
 		for (int c = 0; c < this.getSize(); c++){
 			for (int r = 0; r < this.getSize(); r++){
-				this.setTile(r, c, 'p');
+				this.setTile(r, c, (char) 0);
 			}
 		}
 	}

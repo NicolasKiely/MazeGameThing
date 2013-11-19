@@ -32,6 +32,8 @@ import mazeGame.map.Maze;
  */
 public class MapManagerWindow extends JFrame implements ActionListener, ListSelectionListener, FocusListener{
 	private static final long serialVersionUID = 3L;
+	private static MapManagerWindow instance;
+	
 	public String[][] mapStats;
 	private MapStats selectedStats;
 	
@@ -81,7 +83,14 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 	
 	public ServerDialog dummy;
 	
-	public MapManagerWindow(){
+	
+	public static MapManagerWindow get(){
+		if (MapManagerWindow.instance == null)
+			MapManagerWindow.instance = new MapManagerWindow();
+		return MapManagerWindow.instance;
+	}
+	
+	private MapManagerWindow(){
 		this.createMazeWin = new NewMazeWindow();
 		
 		mapStats = null;
@@ -289,7 +298,7 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 			
 		} else if (e.getActionCommand().equals("swap")){
 			if (ms == null) return;
-			Main.sendServerCommand("/maze/play/swapStage -id \"" +ms.id+ "\"");
+			Main.sendServerCommand("/maze/play/swapStage -id \"" +ms.id+ "\"", true);
 			
 		} else if (e.getActionCommand().equals("delete")) {
 			if (ms == null) return;
@@ -298,7 +307,7 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 				String[] msg = {"Cannot delete map", "Players can only delete private maps"};
 				dummy = new ServerDialog(msg);
 			} else {
-				Main.sendServerCommand("/maze/play/deleteMap -id \"" +ms.id+ "\"");
+				Main.sendServerCommand("/maze/play/deleteMap -id \"" +ms.id+ "\"", true);
 			}
 			
 		} else if (e.getActionCommand().equals("edit")){
@@ -310,9 +319,9 @@ public class MapManagerWindow extends JFrame implements ActionListener, ListSele
 				
 			} else {
 				/* Request data for maze to edit*/
-				Main.editor = new EditorWindow(ms.size);
+				EditorWindow.reset(ms.size);
 				Main.editMazeSetup();
-				Main.sendServerCommand("/maze/play/getMaze -id \"" +ms.id+ "\"");
+				Main.sendServerCommand("/maze/play/getMaze -id \"" +ms.id+ "\"", true);
 				
 				/* Reset own maze data in preparation for packet */
 				Maze.editorMaze = new Maze(ms);

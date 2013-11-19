@@ -15,6 +15,7 @@ import mazeGame.Main;
 
 public class EditorPallet extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 9L;
+	private static EditorPallet instance;
 	
 	private JComboBox<String> tileBox;
 	private String[] tileTypes = {"passable", "impassable", "start", "finish", "trap"};
@@ -24,7 +25,15 @@ public class EditorPallet extends JFrame implements ActionListener {
 	
 	public JLabel tileLbl;
 	
-	public EditorPallet(){
+	
+	public static EditorPallet get(){
+		if (EditorPallet.instance == null)
+			EditorPallet.instance = new EditorPallet();
+		return EditorPallet.instance;
+	}
+	
+	
+	private EditorPallet(){
 		this.setSize(200, 150);
 		this.setLocation(100, 500);
 		this.setTitle("Maze Editor");

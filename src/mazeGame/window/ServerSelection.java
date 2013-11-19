@@ -20,6 +20,7 @@ import mazeGame.Main;
  */
 public class ServerSelection extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 7L;
+	private static ServerSelection instance;
 	
 	/* Panels */
 	private JPanel mainPanel;
@@ -41,7 +42,14 @@ public class ServerSelection extends JFrame implements ActionListener{
 	private JLabel statusLbl;
 	private JButton loggerBtn;
 	
-	public ServerSelection(){
+	
+	public static ServerSelection get(){
+		if (ServerSelection.instance == null)
+			ServerSelection.instance = new ServerSelection();
+		return ServerSelection.instance;
+	}
+	
+	private ServerSelection(){
 		/* Setup frame */
 		this.setSize(400, 140);
 		this.setLocation(100, 100);
@@ -125,10 +133,10 @@ public class ServerSelection extends JFrame implements ActionListener{
 			}
 			
 		} else if (e.getActionCommand().equals("logger")){
-			if (Main.logViewer.isVisible()){
-				Main.logViewer.disable();
+			if (LogViewer.get().isVisible()){
+				LogViewer.get().disable();
 			} else {
-				Main.logViewer.enable();
+				LogViewer.get().enable();
 			}
 		}
 	}

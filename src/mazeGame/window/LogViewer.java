@@ -10,11 +10,19 @@ import javax.swing.JTextArea;
 
 public class LogViewer extends JFrame{
 	private static final long serialVersionUID = 1L;
+	private static LogViewer instance;
+	
 	private JPanel mainPanel;
 	private JTextArea logArea;
 	private JScrollPane scroll;
 	
-	public LogViewer(){
+	public static LogViewer get(){
+		if (LogViewer.instance == null)
+			LogViewer.instance = new LogViewer();
+		return LogViewer.instance;
+	}
+	
+	private LogViewer(){
 		/* Setup frame */
 		this.setSize(640, 440);
 		this.setLocation(600, 250);
