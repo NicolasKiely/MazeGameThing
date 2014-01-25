@@ -12,9 +12,9 @@ package mazeGame;
  *    [X] Send chat
  *  [.] Game list
  *    [X] List available rooms
- *    [.] Join room
+ *    [X] Join room
  *    [X] Create game room
- *    [*] Show waiting room
+ *    [*] Show waiting room (Ready/Kick buttons)
  *  [ ] Game play
  *    [ ] Render map
  *    
@@ -46,7 +46,6 @@ import mazeGame.window.WaitingRoomWindow;
 public class Main implements ActionListener{
 	/* Windowing things */
 	public static NewGameWindow newGame;
-	public static WaitingRoomWindow waitRoom;
 	
 	/* Resource managers */
 	public static NetManager netMan;
@@ -60,9 +59,17 @@ public class Main implements ActionListener{
 	private long loopCounter;
 	private long slowLoopCounter;
 	
+	public static final String DEFAULT_IP   = "162.243.47.181";
+	public static final String DEFAULT_NAME = "Admin";
+	public static final String DEFAULT_PASS = "12345";
+	
 	
 	public static void main(String[] args){
+		/* Initialize managers */
 		imgMan = new ImageManager();
+		netMan = new NetManager();
+		MapStats.statsList = new LinkedList<MapStats>();
+		GameRoom.roomList = new LinkedList<GameRoom>();
 		
 		/* Set up windows */
 		LogViewer.get().disable();
@@ -72,14 +79,9 @@ public class Main implements ActionListener{
 		EditorWindow.reset(10); EditorWindow.get().disable();
 		EditorPallet.get().disable();
 		newGame = new NewGameWindow(); newGame.disable();
-		waitRoom = new WaitingRoomWindow(); waitRoom.disable();
+		WaitingRoomWindow.get().disable();
 		
 		log(">Starting");
-		
-		/* Initialize managers */
-		netMan = new NetManager();
-		MapStats.statsList = new LinkedList<MapStats>();
-		GameRoom.roomList = new LinkedList<GameRoom>();
 		
 		
 		/* Setup timer stuffs */
@@ -158,7 +160,7 @@ public class Main implements ActionListener{
 		EditorWindow.get().disable();
 		EditorPallet.get().disable();
 		Main.newGame.disable();
-		Main.waitRoom.disable();
+		WaitingRoomWindow.get().disable();
 	}
 	
 	
@@ -168,7 +170,7 @@ public class Main implements ActionListener{
 		EditorWindow.get().disable();
 		EditorPallet.get().disable();
 		Main.newGame.disable();
-		Main.waitRoom.disable();
+		WaitingRoomWindow.get().disable();
 	}
 	
 	
@@ -178,7 +180,17 @@ public class Main implements ActionListener{
 		EditorWindow.get().enable();
 		EditorPallet.get().enable();
 		Main.newGame.disable();
-		Main.waitRoom.disable();
+		WaitingRoomWindow.get().disable();
+	}
+	
+	
+	public static void waitingRoomSetup(){
+		ServerSelection.get().disable();
+		MainMenu.get().enable();
+		EditorWindow.get().disable();
+		EditorPallet.get().disable();
+		Main.newGame.disable();
+		WaitingRoomWindow.get().enable();
 	}
 	
 	
@@ -211,5 +223,8 @@ public class Main implements ActionListener{
 	public static void srvCreateMaze(String size, String name){
 		Main.sendServerCommand("/maze/play/newMap -size \"" +size+
 				"\" -name \"" +name+"\"", true);
+	}
+	public static void srvLeaveRoom(){
+		Main.sendServerCommand("/maze/room/leave", true);
 	}
 }

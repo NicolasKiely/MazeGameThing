@@ -165,6 +165,8 @@ public class MainMenu extends JFrame implements ActionListener, KeyListener{
 	
 	public void disable(){
 		this.setVisible(false);
+		GameRoom.roomList.clear();
+		this.resetRoomList();
 	}
 
 

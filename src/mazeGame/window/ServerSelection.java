@@ -75,7 +75,7 @@ public class ServerSelection extends JFrame implements ActionListener{
 		/* Set up IP address field */
 		ipAddressLbl = new JLabel("IP Address: ");
 		ipAddressFld = new JTextField(24);
-		ipAddressFld.setText("127.0.0.1");
+		ipAddressFld.setText(Main.DEFAULT_IP);
 		ipAddressFld.setCaretPosition(9);
 		this.addrPanel.add(ipAddressLbl, BorderLayout.WEST);
 		this.addrPanel.add(ipAddressFld, BorderLayout.EAST);
@@ -96,8 +96,8 @@ public class ServerSelection extends JFrame implements ActionListener{
 		/* Set up user/password fields */
 		this.userNameFld = new JTextField(24);
 		this.passFld = new JPasswordField(24);
-		this.userNameFld.setText("Mr. Java");
-		this.passFld.setText("Java Pass");
+		this.userNameFld.setText(Main.DEFAULT_NAME);
+		this.passFld.setText(Main.DEFAULT_PASS);
 		this.userNameLbl = new JLabel("User name: ");
 		this.passLbl = new JLabel("Password: ");
 		this.userPanel.add(this.userNameFld, BorderLayout.EAST);

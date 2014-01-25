@@ -10,10 +10,23 @@ import java.util.List;
 public class GameRoom {
 	public static List<GameRoom> roomList;
 	
+	/** Current game room player is in */
+	public static GameRoom activeRoom;
+	
+	
+	/** Host of game room*/
 	private String host;
+	
+	/** Type of game */
 	private String gameType;
+	
+	/** Current number of players in game */
 	private int currentPlayers;
+	
+	/** Maximum number of players */
 	private int maxPlayers;
+	
+	/** Map size */
 	private int mapSize;
 
 	

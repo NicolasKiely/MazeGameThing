@@ -11,8 +11,10 @@ import java.util.List;
 
 import mazeGame.Main;
 import mazeGame.NetworkHandlers.packets.ChatUpdate;
+import mazeGame.NetworkHandlers.packets.GameRoomDescUpdate;
 import mazeGame.NetworkHandlers.packets.MapStatsUpdate;
 import mazeGame.NetworkHandlers.packets.MazeDataPacket;
+import mazeGame.NetworkHandlers.packets.MazeRoomUpdate;
 import mazeGame.NetworkHandlers.packets.RoomListUpdate;
 import mazeGame.NetworkHandlers.packets.ServerDialogUpdate;
 import mazeGame.window.ServerSelection;
@@ -44,6 +46,8 @@ public class NetManager {
 		this.registerHandler(new MazeDataPacket());
 		this.registerHandler(new ChatUpdate());
 		this.registerHandler(new RoomListUpdate());
+		this.registerHandler(new GameRoomDescUpdate());
+		//this.registerHandler(new MazeRoomUpdate());
 	}
 	
 	
