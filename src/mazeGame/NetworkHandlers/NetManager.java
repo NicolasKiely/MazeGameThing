@@ -29,6 +29,7 @@ public class NetManager {
 	private List<PacketHandler> handlers;
 	private int state;
 	private NetTable table;
+	String bufferLine;
 	
 	/**
 	 * Initializes stuff
@@ -41,6 +42,7 @@ public class NetManager {
 		
 		this.state = 0;
 		this.table = null;
+		this.bufferLine = "";
 		this.registerHandler(new MapStatsUpdate());
 		this.registerHandler(new ServerDialogUpdate());
 		this.registerHandler(new MazeDataPacket());
@@ -101,22 +103,54 @@ public class NetManager {
 			//state = 0;
 			//NetTable table = null;
 			
-			while (sockReader != null && sockReader.ready()){
-				if (table == null){table = new NetTable();}
+			while (this.sockReader != null && this.sockReader.ready()){
+				String[] fields = null;
+				int chr;
+				boolean readyToProcess = false;
 				
-				String s = sockReader.readLine();
-				String[] fields = s.split("\t");
-				if (s == null || fields == null || s.equals("")) return;
+				if (this.table == null){this.table = new NetTable();}
 				
-				
-				if (state == 0){
-					table.setHeader(fields);
+				/* Read line */
+				while(true){
+					chr = sockReader.read();
 					
-				} else if (state == 1){
-					table.setColumns(fields);
+					if (chr == '\n' || chr == '\r'){
+						/* Finished reading line */
+						readyToProcess = true;
+						break;
+					}
+					
+					/* Handle break case */
+					if (chr < 0) break;
+					
+					/* Add character to string */
+					this.bufferLine = this.bufferLine + (char) chr;
+				}
+				
+				/* Don't do anything if input line is still incomplete */
+				if (readyToProcess == false) break;
+				
+				/* Split string into fields */
+				if (!this.bufferLine.equals("")){
+					fields = this.bufferLine.split("\t");
+					this.bufferLine = "";
 					
 				} else {
-					table.setRecords(fields, table.getColumns().length);
+					/* Debug info. NULL line getting inserted before header? */
+					String st = "???";
+					if (state == 0) st = "header";
+					if (state == 1) st = "columns";
+					if (state != 2) Main.logln("Empty line for " + st);
+				}
+				
+				if (state == 0){
+					if (fields != null) table.setHeader(fields);
+					
+				} else if (state == 1){
+					if (fields != null) table.setColumns(fields);
+					
+				} else {
+					if (fields != null && table.getColumns() != null) table.setRecords(fields, table.getColumns().length);
 					state = -1;
 					
 					this.processTablePacket(table);
@@ -147,7 +181,7 @@ public class NetManager {
 		}
 	
 		/* Debugging stuff */
-		if (!packetWasHandled && !inputTable.getColumns()[0].equals("ACK")) Main.logAbridged(inputTable.toString());
+		if (!packetWasHandled && !inputTable.getColumnString(0).equals("ACK")) Main.logAbridged(inputTable.toString());
 	}
 	
 	

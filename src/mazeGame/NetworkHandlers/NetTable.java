@@ -106,6 +106,12 @@ public class NetTable {
 	public String[] getColumns(){return this.columns;}
 	public String[] getHeader(){return this.header;}
 	
+	public String getColumnString(int i){
+		if (this.columns == null) return "";
+		if (i >= this.columns.length) return "";
+		if (this.columns[i] == null) return "";
+		return this.columns[i];
+	}
 	
 	/**
 	 * Returns a formatted string
@@ -114,27 +120,39 @@ public class NetTable {
 		String res = "{[Header: ";
 		
 		/* Add header */
-		for (int i = 0; i < this.header.length; i++){
-			res += this.header[i];
-			if (i < this.header.length - 1){res += ", ";}
+		if (this.header != null){
+			for (int i = 0; i < this.header.length; i++){
+				res += this.header[i];
+				if (i < this.header.length - 1){res += ", ";}
+			}
+		} else {
+			res += "#NULL#";
 		}
 		
 		/* Add columns */
 		res += "] [Columns: ";
-		for (int i = 0; i < this.columns.length; i++){
-			res += this.columns[i];
-			if (i < this.columns.length - 1){res += ", ";}
+		if (this.columns != null){
+			for (int i = 0; i < this.columns.length; i++){
+				res += this.columns[i];
+				if (i < this.columns.length - 1){res += ", ";}
+			}
+		} else {
+			res += "#NULL#";
 		}
 		
 		/* Add records */
 		res += "] [Records:";
-		for (int i = 0; i < this.records.length; i++){
-			res += " (";
-			for (int j = 0; j < this.records[i].length; j++){
-				res += this.records[i][j];
-				if (j < this.records[i].length - 1){res += ", ";}
+		if (this.records != null){
+			for (int i = 0; i < this.records.length; i++){
+				res += " (";
+				for (int j = 0; j < this.records[i].length; j++){
+					res += this.records[i][j];
+					if (j < this.records[i].length - 1){res += ", ";}
+				}
+				res += ")";
 			}
-			res += ")";
+		} else {
+			res += "##NULL##";
 		}
 		
 		res += "]";
