@@ -27,6 +27,7 @@ public class NetManager {
 	private BufferedReader sockReader;
 	
 	private List<PacketHandler> handlers;
+	private NetTableBuilder builder;
 	private int state;
 	private NetTable table;
 	String bufferLine;
@@ -39,6 +40,7 @@ public class NetManager {
 		sockWriter = null;
 		sockReader = null;
 		handlers = new LinkedList<PacketHandler>();
+		builder = new NetTableBuilder();
 		
 		this.state = 0;
 		this.table = null;
@@ -98,7 +100,21 @@ public class NetManager {
 	 * Attempt to read socket
 	 */
 	public void readSocket(){
-		/* Read socket */
+		NetTable[] results;
+		
+		/* Read from socket */
+		this.builder.processStream(this.sockReader);
+		results = this.builder.getTables();
+		
+		if (results == null) return;
+		
+		for (NetTable result : results){
+			this.processTablePacket(result);
+		}
+		
+		
+		// Read socket
+		/*
 		try {
 			//state = 0;
 			//NetTable table = null;
@@ -110,34 +126,34 @@ public class NetManager {
 				
 				if (this.table == null){this.table = new NetTable();}
 				
-				/* Read line */
+				// Read line
 				while(true){
 					chr = sockReader.read();
 					
 					if (chr == '\n' || chr == '\r'){
-						/* Finished reading line */
+						// Finished reading line
 						readyToProcess = true;
 						break;
 					}
-					
+					*/
 					/* Handle break case */
-					if (chr < 0) break;
+					//if (chr < 0) break;
 					
 					/* Add character to string */
-					this.bufferLine = this.bufferLine + (char) chr;
-				}
+					//this.bufferLine = this.bufferLine + (char) chr;
+				//}
 				
 				/* Don't do anything if input line is still incomplete */
-				if (readyToProcess == false) break;
+				//if (readyToProcess == false) break;
 				
 				/* Split string into fields */
-				if (!this.bufferLine.equals("")){
+				/*if (!this.bufferLine.equals("")){
 					fields = this.bufferLine.split("\t");
 					this.bufferLine = "";
 					
-				} else {
+				} else {*/
 					/* Debug info. NULL line getting inserted before header? */
-					String st = "???";
+					/*String st = "???";
 					if (state == 0) st = "header";
 					if (state == 1) st = "columns";
 					if (state != 2) Main.logln("Empty line for " + st);
@@ -162,7 +178,7 @@ public class NetManager {
 			
 		} catch (IOException e) {
 			Main.logln("Main loop socket read: " + e.getMessage());
-		}
+		}*/
 	}
 	
 	
